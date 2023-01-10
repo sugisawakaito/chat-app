@@ -1,5 +1,5 @@
 
-# grpc-web-react-hooks
+# grpc-chat-app
 
 Example of gRPC-Web + React Hooks + Go ✋
 
