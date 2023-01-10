@@ -1,0 +1,54 @@
+version: '3'
+services:
+#  proto:
+#    command: ./proto/scripts/protoc.sh
+#    build:
+#      context: .
+#      dockerfile: DockerfileProto
+#    volumes:
+#      - .:/proto
+  server:
+#    command: ./scripts/server.sh
+    build:
+      context: grpc-web-react-hooks
+      dockerfile: grpc-web-react-hooks/DockerfileServer
+    volumes:
+      - ./server:/go/src/grpc-web-react-hooks
+    ports:
+      - "9090:9090"
+    command: ["air"]
+#    depends_on:
+#      - proto
+  mysql:
+    build: mysql
+    container_name: mysql
+    environment:
+      TZ: Asia/Tokyo
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/mysql_volume:/var/lib/mysql
+
+  envoy:
+    build:
+      context: grpc-web-react-hooks
+      dockerfile: grpc-web-react-hooks/DockerfileEnvoy
+    ports:
+      - "8080:8080"
+    links:
+      - server
+  client:
+    command: ./scripts/client.sh
+    build:
+      context: grpc-web-react-hooks
+      dockerfile: grpc-web-react-hooks/DockerfileClient
+    volumes:
+      - ./client:/client
+      - /client/node_modules
+#    depends_on:
+#      - proto
+    ports:
+      - "3000:3000"
+    environment: 
+      - EXTEND_ESLINT=true
