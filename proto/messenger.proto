@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 
-package messenger;
+package proto;
 
 service Messenger {
   rpc GetMessages (google.protobuf.Empty) returns (stream MessageResponse) {}

@@ -1,4 +1,4 @@
-module github.com/okmttdhr/grpc-web-react-hooks
+module server
 
 go 1.18
 

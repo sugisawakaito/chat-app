@@ -9,6 +9,5 @@ COPY ./server/main.go /go/src/main.go
 
 RUN apk add --no-cache --update \
   git
-RUN go install github.com/cosmtrek/air@v1.27.4
-
-
+RUN go install github.com/cosmtrek/air@v1.27.4 \
+go install -tags mysql github.com/golang-migrate/migrate/v4/cmd/migrate@latest

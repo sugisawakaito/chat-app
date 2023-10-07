@@ -1,6 +1,7 @@
 version: '3'
 services:
   proto:
+    container_name: proto
     command: ./proto/scripts/protoc.sh
     build:
       context: .
@@ -8,29 +9,35 @@ services:
     volumes:
       - .:/proto
   server:
-    # command: ./scripts/server.sh
+    container_name: server
     build:
       context: .
       dockerfile: DockerfileServer
     volumes:
       - ./server:/go/src
-      # - ./server/go.mod:/go/src/server/go.mod
     ports:
       - "9090:9090"
     command: ["air"]
     depends_on:
       - proto
   mysql:
+    image: mysql:5.7
     build: mysql
     container_name: mysql
     environment:
-      TZ: Asia/Tokyo
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: data 
+      MYSQL_USER: root 
+      MYSQL_PASSWORD: root
+      TZ: Asia/Tokyo
     ports:
       - "3306:3306"
     volumes:
       - ./mysql/mysql_volume:/var/lib/mysql
+    depends_on:
+      - server
   envoy:
+    container_name: envoy
     build:
       context: .
       dockerfile: DockerfileEnvoy
@@ -39,6 +46,7 @@ services:
     links:
       - server
   client:
+    container_name: client 
     command: ./scripts/client.sh
     build:
       context: .
