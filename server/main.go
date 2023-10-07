@@ -2,17 +2,17 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"github.com/okmttdhr/grpc-web-react-hooks/entity"
+	// "fmt"
+	// "github.com/okmttdhr/grpc-web-react-hooks/entity"
 	"log"
 	"net"
-	"os"
+	// "os"
 	"time"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	pb "github.com/okmttdhr/grpc-web-react-hooks/messenger"
 
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -49,20 +49,18 @@ func (s *server) GetMessages(_ *empty.Empty, stream pb.Messenger_GetMessagesServ
 }
 
 func (s *server) CreateMessage(ctx context.Context, r *pb.MessageRequest) (*pb.MessageResponse, error) {
-	fmt.Print(";alsdkfj")
-	log.Printf("Received: %v", r.GetMessage())
 	newR := &pb.MessageRequest{Message: r.GetMessage() + ": " + time.Now().Format("2006-01-02 15:04:05")}
 	s.requests = append(s.requests, newR)
 	return &pb.MessageResponse{Message: r.GetMessage()}, nil
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		path, _ := os.Getwd()
-		fmt.Println("カレントディレクトリ = " + path)
-		log.Fatal(".env のロードに失敗しました。")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	path, _ := os.Getwd()
+	// 	fmt.Println("カレントディレクトリ = " + path)
+	// 	log.Fatal(".env のロードに失敗しました。")
+	// }
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
@@ -71,9 +69,9 @@ func main() {
 	pb.RegisterMessengerServer(s, &server{})
 	reflection.Register(s)
 
-	fmt.Println("start connecting to db")
-	entity.DBConnect()
-	defer entity.Close()
+	// fmt.Println("start connecting to db")
+	// entity.DBConnect()
+	// defer entity.Close()
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

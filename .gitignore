@@ -113,4 +113,5 @@ dist
 .env.test.local
 .env.production.local
 
+mysql/mysql_volume
 server/tmp

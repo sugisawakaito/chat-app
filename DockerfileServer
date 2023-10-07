@@ -2,9 +2,13 @@ FROM golang:1.18-alpine
 
 ENV GO111MODULE=on
 
-WORKDIR /go/src/grpc-web-react-hooks
+WORKDIR /go/src
+COPY ./server/go.mod /go/src/go.mod
+COPY ./server/go.sum /go/src/go.sum
+COPY ./server/main.go /go/src/main.go
 
 RUN apk add --no-cache --update \
   git
 RUN go install github.com/cosmtrek/air@v1.27.4
+
 

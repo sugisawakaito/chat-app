@@ -1,24 +1,25 @@
 version: '3'
 services:
-#  proto:
-#    command: ./proto/scripts/protoc.sh
-#    build:
-#      context: .
-#      dockerfile: DockerfileProto
-#    volumes:
-#      - .:/proto
-  server:
-#    command: ./scripts/server.sh
+  proto:
+    command: ./proto/scripts/protoc.sh
     build:
-      context: grpc-web-react-hooks
-      dockerfile: grpc-web-react-hooks/DockerfileServer
+      context: .
+      dockerfile: DockerfileProto
     volumes:
-      - ./server:/go/src/grpc-web-react-hooks
+      - .:/proto
+  server:
+    # command: ./scripts/server.sh
+    build:
+      context: .
+      dockerfile: DockerfileServer
+    volumes:
+      - ./server:/go/src
+      # - ./server/go.mod:/go/src/server/go.mod
     ports:
       - "9090:9090"
     command: ["air"]
-#    depends_on:
-#      - proto
+    depends_on:
+      - proto
   mysql:
     build: mysql
     container_name: mysql
@@ -29,11 +30,10 @@ services:
       - "3306:3306"
     volumes:
       - ./mysql/mysql_volume:/var/lib/mysql
-
   envoy:
     build:
-      context: grpc-web-react-hooks
-      dockerfile: grpc-web-react-hooks/DockerfileEnvoy
+      context: .
+      dockerfile: DockerfileEnvoy
     ports:
       - "8080:8080"
     links:
@@ -41,13 +41,13 @@ services:
   client:
     command: ./scripts/client.sh
     build:
-      context: grpc-web-react-hooks
-      dockerfile: grpc-web-react-hooks/DockerfileClient
+      context: .
+      dockerfile: DockerfileClient
     volumes:
       - ./client:/client
       - /client/node_modules
-#    depends_on:
-#      - proto
+    depends_on:
+      - proto
     ports:
       - "3000:3000"
     environment: 
