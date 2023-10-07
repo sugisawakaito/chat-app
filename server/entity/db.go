@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"fmt"
 	"os"
 
 	"gorm.io/driver/mysql"
@@ -43,4 +44,3 @@ func Close() {
 		return
 	}
 }
-

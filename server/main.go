@@ -1,11 +1,11 @@
 package main
 
 import (
-	"server/entity"
-	"server/handler"
 	"log"
 	"net"
 	"os"
+	"server/entity"
+	"server/handler"
 
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
@@ -28,7 +28,6 @@ func main() {
 	s := grpc.NewServer()
 	handler.RegisterMessengerServer(s)
 	reflection.Register(s)
-
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

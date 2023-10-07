@@ -1,13 +1,15 @@
 package handler
 
 import (
-	"google.golang.org/grpc"
-	"time"
-	"log"
 	"context"
-	pb "server/messenger"
+	"log"
+	pb "server/proto"
+	"time"
+
 	"github.com/golang/protobuf/ptypes/empty"
+	"google.golang.org/grpc"
 )
+
 type messengerRequest struct {
 	pb.UnimplementedMessengerServer
 	requests []*pb.MessageRequest
@@ -16,7 +18,6 @@ type messengerRequest struct {
 func RegisterMessengerServer(s *grpc.Server) {
 	pb.RegisterMessengerServer(s, &messengerRequest{})
 }
-
 
 func (s *messengerRequest) GetMessages(_ *empty.Empty, stream pb.Messenger_GetMessagesServer) error {
 	for _, r := range s.requests {
